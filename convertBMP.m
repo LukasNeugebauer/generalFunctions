@@ -18,7 +18,7 @@ else
 end
 
 %add filesep character if necesary
-if ~strcmp(folder,filesep)
+if ~strcmp(folder(end),filesep)
     folder(end+1) = filesep;
 end
 
