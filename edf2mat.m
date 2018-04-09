@@ -18,20 +18,19 @@ function [matFile] = edf2mat(edfFilename,varargin)
 %system.
 
     %check compatibility
-    sys = computer;
-    if any(~IsLinux || ~strcmp(sys(end-1:end),'64'))
+     if ~strcmp(computer,'GLNXA64')
         error('Read the help and try again on an appropriate machine!')
     end
 
     %add path with edfread() to MATLAB path if needed
     pathToFun   = [filesep,'home',filesep,'onat',filesep,'Documents',filesep,'Code',filesep,'Matlab',filesep,'edfread',filesep,'current'];
-    if any(strcmp(pathToFun,regexp(path,pathsep,'split')));
+    if ~any(strcmp(pathToFun,regexp(path,pathsep,'split')));
         addpath(pathToFun);
     end
     
     %check for absolute vs. relative path and make it absolute 
     if ~strcmp(edfFilename(1:6),[filesep,'home',filesep])
-        edfFilename     = [pwd,edfFilename];
+        edfFilename     = [pwd,filesep,edfFilename];
     end
 
     %create the mat file
@@ -55,6 +54,12 @@ function [matFile] = edf2mat(edfFilename,varargin)
     matFile = cell2struct(reshape(dummyCell(keepIndex,:),newSize),newNames);
 
     [direc,name]    = fileparts(edfFilename);
-    save([direc,name,'.mat'],'matFile','meta');
+    save([direc,filesep,name,'.mat'],'matFile','meta');
+    fprintf('Saved .mat-file to %s\n',[direc,filesep,name]);
+    function [newString] = myDeblank(oldString)
+    	for x = 1:numel(oldString)
+		newString{x} = regexprep(oldString{x},' +','');
+	end
+    end
 
 end

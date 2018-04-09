@@ -22,7 +22,7 @@ z = z.*r + center(3);
 
 %plotting
 h = surfl(x,y,z);
-set(h,'FaceAlpha',0.5);
+set(h,'FaceAlpha',0.2);
 shading interp;
 
 end
