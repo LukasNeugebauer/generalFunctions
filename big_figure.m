@@ -1,4 +1,4 @@
-function [h]    = big_figure(varargin);
+function [h]    = big_figure(varargin)
 %[h]    = big_figure([padding][,monitor]);
 %
 %Tired of opening wrong-sized figures in MATLAB? Me too... Fear no more!

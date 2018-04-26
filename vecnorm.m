@@ -16,7 +16,7 @@ function [norm]  = vecnorm(X)
     
     funString   = '@(X) sqrt(';
     for x = 1:D
-        funString   = [funString,'+X(:,',num2str(D),').^2 ']; %#ok<AGROW>
+        funString   = [funString,'+X(:,',num2str(x),').^2 ']; %#ok<AGROW>
     end
     funString   = [funString,');'];
     
