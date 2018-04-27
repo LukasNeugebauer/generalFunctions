@@ -8,9 +8,9 @@ function [norm]  = vecnorm(X)
 %
 %
 %9-April-2018 - Lukas Neugebauer
-
+    
     D = size(X,2);
-
+    
     %doesn't look nice but it's still nicer than looping through rows. Much
     %faster for big matrices
     
@@ -19,8 +19,7 @@ function [norm]  = vecnorm(X)
         funString   = [funString,'+X(:,',num2str(x),').^2 ']; %#ok<AGROW>
     end
     funString   = [funString,');'];
-    
-    eval(['fun  = ',funString]); %why does everybode hate eval? It's awesome. 
-    norm    = feval(fun,X);
+    fun         = str2func(funString);
+    norm        = fun(X);
 
 end
