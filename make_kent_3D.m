@@ -1,41 +1,33 @@
-function [out]    = make_kent_3D(X,y1,y2,y3,kappa,beta,varargin)
+function [out]    = make_kent_3D(X,center,majAx,kappa,beta,varargin)
 %function out    = make_kent_2D(X,y1,y2,y3,kappa,beta[,radius])
 %
-%creates a Kent distribution in 3D(which is basically a two-dimensional
-%Gaussian on the unit sphere in R³. For further (although admittedly not
-%that much) information, have a look here: 
+%creates a variant of a Kent distribution in R³. For further (although 
+%admittedly not that much) information, have a look here: 
 %https://en.wikipedia.org/wiki/Kent_distribution
 %
-%Alternatively open up a textbook on directional statistics 
+%The present case is NOT a pdf because multiplying an amplitude to it makes
+%it not integrate to 1 anymore.
 %
-%This will not fit the parameters. Use "kent.mle()" from the R package
-%"Directional" for that. No need to reinvent the wheel. 
+%Source for equations: 
+%(Mardia & Jupp, 2000, 'Directional Statistics'); 
 %
 %
 %Expected parameters:
 %   
 %   X       -   Coordinates for points on a sphere,
-%               nx2-matrix for spherical coordinates. 
-%               nx3-matrix for cartesian coordinates.
-%               This function will output a 1xn-matrix with corresponding 
-%               probability densities
-%               if X is nx2, radius is assumed to be 1 except stated
-%               otherwise
+%               nx2-matrix of spherical coordinates with radius 1 
 %               
-%
-%   y1      -   Mean direction, highest density of probability function 
-%   y2      -   major axis
-%   y3      -   minor axis
+%   center  -   Mean direction, highest density of probability function 
+%   majAx   -   major axis
+%      (minor axis will be inferred as it has to be orthogonal to both the
+%      center and the major axis and thus is no free parameter)
 %   kappa   -   concentration parameter of function. Higher value means
 %               stronger concentration
 %   beta    -   ellipsicity parameter. Higher value means more elliptical
 %               distribution
 %
-%Theoretically one would need the normalizing constant but it seems like a
-%pain in the ass and I think it's not important here, since it's about the
-%relative probabilities. Might be wrong though.
 %
-%09-April-2018; Lukas Neugebauer
+%29-May-2018; Lukas Neugebauer
 
     %% handle all input parameters and complain if something doesn't look right 
     if size(X,2) == 2
@@ -88,12 +80,13 @@ function [out]    = make_kent_3D(X,y1,y2,y3,kappa,beta,varargin)
     %can probably be written in matrix notation but my lin alg sucks, so loop
     %it is
     out     = nan(size(X,1),1);
-    for z = 1:size(X,1)
-        out(z)  = feval(kentFun(X(z,:),y1,y2,y3,kappa,beta)); 
-    end
-
+    out(z)  = feval(kentFun(X(z,:),y1,y2,y3,kappa,beta)); 
+    
     %Scale it
     out     = Scale(out);
-
-
+    
+    %Loss function that should be optimized
+    
+    
+    
 end

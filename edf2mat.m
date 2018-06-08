@@ -24,7 +24,7 @@ function [matFile] = edf2mat(edfFilename,varargin)
 
     %add path with edfread() to MATLAB path if needed
     pathToFun   = [filesep,'home',filesep,'onat',filesep,'Documents',filesep,'Code',filesep,'Matlab',filesep,'edfread',filesep,'current'];
-    if ~any(strcmp(pathToFun,regexp(path,pathsep,'split')));
+    if ~any(strcmp(pathToFun,regexp(path,pathsep,'split')))
         addpath(pathToFun);
     end
     
@@ -34,7 +34,7 @@ function [matFile] = edf2mat(edfFilename,varargin)
     end
 
     %create the mat file
-    [dummyMat,meta]   = edfread(edfFilename,'TRIALID','TRIAL_RESULT','Stim Onset','Stim Offset','UCS Onset','UCS Offset');
+    [dummyMat,meta]   = edfread(edfFilename,'TRIALID','TRIAL_RESULT','Stim Onset','Stim Offset','UCS Onset','UCS Offset'); %#ok<ASGLU>
 
     %now for the fieldname business
     names   = fieldnames(dummyMat);
@@ -56,10 +56,12 @@ function [matFile] = edf2mat(edfFilename,varargin)
     [direc,name]    = fileparts(edfFilename);
     save([direc,filesep,name,'.mat'],'matFile','meta');
     fprintf('Saved .mat-file to %s\n',[direc,filesep,name]);
+    
     function [newString] = myDeblank(oldString)
-    	for x = 1:numel(oldString)
-		newString{x} = regexprep(oldString{x},' +','');
-	end
+        newString   = cell(size(oldString));
+        for y = 1:numel(oldString)
+            newString{y} = regexprep(oldString{y},' +','');
+        end
     end
 
 end
